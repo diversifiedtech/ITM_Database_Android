@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import caruso.nicholas.com.itm_database.QueryBuilder.DropTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.Insert;
 import caruso.nicholas.com.itm_database.QueryBuilder.JoinHelper;
 import caruso.nicholas.com.itm_database.QueryBuilder.OrderList;
@@ -72,6 +73,11 @@ public abstract class TableHelper implements Serializable {
     public void truncate() {
         Truncate truncate = new Truncate(table_name());
         dbHelper.megaSafeTruncate(truncate.ImSure());
+    }
+
+    public void drop() {
+        DropTable dropTable = new DropTable(table_name());
+        dbHelper.megaSafeDropTable(dropTable.ImSure());
     }
 
     public String getJSONPOST() throws JSONException {

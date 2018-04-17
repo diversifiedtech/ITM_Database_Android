@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caruso.nicholas.com.itm_database.QueryBuilder.Delete;
+import caruso.nicholas.com.itm_database.QueryBuilder.DropTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.Insert;
 import caruso.nicholas.com.itm_database.QueryBuilder.JoinHelper;
 import caruso.nicholas.com.itm_database.QueryBuilder.OrderList;
@@ -33,6 +34,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
 
     protected abstract ArrayList<TableHelper> all_tables();
+
     protected abstract UpgradeHelper getUpgradeHelper(SQLiteDatabase db, int oldVersion, int newVersion);
 
     public DatabaseHelper(Context context, String remote_database_link, String database, SQLiteDatabase.CursorFactory cursorFactory, int version) {
@@ -41,6 +43,13 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
+    public SQLiteDatabase Read() {
+        return getReadableDatabase();
+    }
+
+    public SQLiteDatabase Write() {
+        return getWritableDatabase();
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -64,6 +73,20 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         if (truncate.isSure()) {
             db.execSQL(truncate.getTruncate());
+            return true;
+        }
+        return false;
+    }
+
+    public void megaForceDropTable(DropTable drop) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(drop.getTruncate());
+    }
+
+    public boolean megaSafeDropTable(DropTable drop) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (drop.isSure()) {
+            db.execSQL(drop.getTruncate());
             return true;
         }
         return false;
@@ -196,5 +219,6 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
         long x = db.delete(delete.getTable(), where.getStatement(), where.getWhereArgs());
         return x > 0;
     }
+
 
 }
