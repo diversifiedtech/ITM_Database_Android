@@ -29,8 +29,6 @@ import caruso.nicholas.com.itm_database.QueryBuilder.WhereWrapper;
 public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
     public final String REMOTE_DATABASE_LINK;
-    private final String DATABASE_NAME = "LocalDatabase";
-    private final int VERSION = 149;
     private Context context;
 
     protected abstract ArrayList<TableHelper> all_tables();
