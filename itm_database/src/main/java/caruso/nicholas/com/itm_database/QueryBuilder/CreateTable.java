@@ -10,6 +10,7 @@ public class CreateTable {
     private String table_name;
     private StringBuilder create_string;
     private ArrayList<String> fields;
+    private boolean ifNotExists = false;
 
     public CreateTable(String Table_name) {
         this.table_name = Table_name;
@@ -25,8 +26,20 @@ public class CreateTable {
         fields.add(field.toString());
     }
 
+    public void addIfNotExistsTag() {
+        ifNotExists = true;
+    }
+
+    public void removeIfNotExistsTag() {
+        ifNotExists = false;
+    }
+
     public String get() {
-        create_string.append("CREATE TABLE ").append(table_name).append(" (");
+        create_string.append("CREATE TABLE ").append(table_name);
+        if (ifNotExists) {
+            create_string.append(" IF NOT EXISTS");
+        }
+        create_string.append(" (");
         for (int i = 0; i < fields.size() - 1; i++) {
             create_string.append(fields.get(i)).append(",");
         }

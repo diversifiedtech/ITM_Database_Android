@@ -23,17 +23,7 @@ public class User extends Item {
     public Integer userid;
     public String username;
     public String password;
-    public Integer companyno;
-    public String name;
-    public Date Last_Sync;
 
-    public String Last_SyncString() {
-        return DateTimeConversion.TimeMedium(Last_Sync);
-    }
-
-    public void Last_Sync(String last_sync) {
-        Last_Sync = DateTimeConversion.StringToDateTime(last_sync);
-    }
 
     public static UserModal getModal(Context mContext) {
         return new UserModal(mContext);
@@ -44,9 +34,6 @@ public class User extends Item {
         userid = cursor.getIntByField(UsersTable.COL_ID);
         username = cursor.getStringByField(UsersTable.COL_USERNAME);
         password = cursor.getStringByField(UsersTable.COL_PASSWORD);
-        companyno = cursor.getIntByField(UsersTable.FIELD_COMPANYNO);
-        name = cursor.getStringByField(UsersTable.FIELD_NAME);
-        Last_Sync(cursor.getStringByField(UsersTable.FIELD_LAST_SYNC));
     }
 
     @Override
@@ -55,9 +42,6 @@ public class User extends Item {
         dump += "userid" + userid + "\n";
         dump += "username" + username + "\n";
         dump += "password" + password + "\n";
-        dump += "companyno" + companyno + "\n";
-        dump += "name" + name + "\n";
-        dump += "Last_Sync" + Last_SyncString() + "\n";
         return dump;
     }
 
@@ -67,9 +51,6 @@ public class User extends Item {
         cv.put(UsersTable.COL_ID, userid);
         cv.put(UsersTable.COL_USERNAME, username);
         cv.put(UsersTable.COL_PASSWORD, password);
-        cv.put(UsersTable.FIELD_COMPANYNO, companyno);
-        cv.put(UsersTable.FIELD_NAME, name);
-        cv.put(UsersTable.FIELD_LAST_SYNC, Last_SyncString());
         return cv;
     }
 

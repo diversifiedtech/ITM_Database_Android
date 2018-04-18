@@ -1,12 +1,12 @@
 package caruso.nicholas.com.itm_database;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import caruso.nicholas.com.itm_database.QueryBuilder.Delete;
 import caruso.nicholas.com.itm_database.QueryBuilder.JoinHelper;
 import caruso.nicholas.com.itm_database.QueryBuilder.ProjectionList;
 import caruso.nicholas.com.itm_database.QueryBuilder.Query;
@@ -18,9 +18,9 @@ import caruso.nicholas.com.itm_database.QueryBuilder.Query;
 
 public abstract class UpgradeHelper {
     int[] versions = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112};
-    private SQLiteDatabase db;
-    private int oldVersion;
-    private int newVersion;
+    protected SQLiteDatabase db;
+    protected int oldVersion;
+    protected int newVersion;
 
     protected UpgradeHelper(SQLiteDatabase db, int oldVersion, int newVersion) {
         this.db = db;
@@ -28,7 +28,7 @@ public abstract class UpgradeHelper {
         this.newVersion = newVersion;
     }
 
-    public abstract void upgrade(Context context);
+    public abstract void upgrade(DatabaseHelper database);
 
     private ArrayList<String> newGeneratedTables = new ArrayList<>();
 

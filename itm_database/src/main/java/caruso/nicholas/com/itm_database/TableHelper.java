@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import caruso.nicholas.com.itm_database.QueryBuilder.CreateTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.DropTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.Insert;
 import caruso.nicholas.com.itm_database.QueryBuilder.JoinHelper;

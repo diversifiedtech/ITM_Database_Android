@@ -15,10 +15,10 @@ import caruso.nicholas.com.itm_database.UpgradeHelper;
  * AndroidStudioProjects.
  */
 public final class Database extends DatabaseHelper {
-    public static final String REMOTE_DATABASE_LINK = "http://138.197.114.57";
+    public static final String REMOTE_DATABASE_LINK = "www.com";
     public static final String AuthTable = UsersTable.TABLE_NAME;
-    public static final String DATABASE_NAME = "LocalDatabase";
-    private static final int VERSION = 149;
+    public static final String DATABASE_NAME = "local_database";
+    private static final int VERSION = 2;
 
     public Database(Context context) {
         super(context, REMOTE_DATABASE_LINK, DATABASE_NAME, null, VERSION);
@@ -33,7 +33,7 @@ public final class Database extends DatabaseHelper {
 
     @Override
     protected UpgradeHelper getUpgradeHelper(SQLiteDatabase db, int oldVersion, int newVersion) {
-        return new Upgrade(db, oldVersion, newVersion);
+        return new Upgrade( db, oldVersion, newVersion);
     }
 
 

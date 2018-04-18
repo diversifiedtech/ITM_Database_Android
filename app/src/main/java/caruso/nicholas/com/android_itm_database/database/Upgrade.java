@@ -1,8 +1,11 @@
 package caruso.nicholas.com.android_itm_database.database;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import caruso.nicholas.com.itm_database.DatabaseHelper;
+import caruso.nicholas.com.itm_database.QueryBuilder.DropTable;
+import caruso.nicholas.com.itm_database.TableHelper;
 import caruso.nicholas.com.itm_database.UpgradeHelper;
 
 /**
@@ -15,7 +18,13 @@ public class Upgrade extends UpgradeHelper {
     }
 
     @Override
-    public void upgrade(Context context) {
-
+    public void upgrade(DatabaseHelper database) {
+        Log.d("dtc", "upgrade");
+        for (TableHelper t : database.all_tables()) {
+            Log.d("dtc", t.table_name());
+            DropTable dropTable = new DropTable(t.table_name());
+            Database.megaSafeDropTable(dropTable.ImSure().ifExists(), db);
+            Database.megaCreateTable(t.CREATE_TABLE(), db);
+        }
     }
 }

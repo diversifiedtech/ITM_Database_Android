@@ -7,6 +7,7 @@ package caruso.nicholas.com.itm_database.QueryBuilder;
 public class DropTable {
     private boolean AreYouSure = false;
     private String table_name;
+    private boolean ifExists = false;
 
     public DropTable(String table_name) {
         this.table_name = table_name;
@@ -15,6 +16,16 @@ public class DropTable {
     public DropTable(String table_name, boolean areYouSure) {
         this.table_name = table_name;
         this.AreYouSure = areYouSure;
+    }
+
+    public DropTable ifExists() {
+        ifExists = true;
+        return this;
+    }
+
+    public DropTable clearIfExists() {
+        ifExists = false;
+        return this;
     }
 
     public DropTable ImSure() {
@@ -28,13 +39,12 @@ public class DropTable {
     }
 
     public String getTruncate() {
-        return "DROP FROM " + table_name + " ;";
+        return "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + table_name + ";";
     }
 
     public boolean isSure() {
         return AreYouSure;
     }
-
 
 
 }

@@ -16,16 +16,10 @@ public class UsersTable extends TableHelper {
     public static final String COL_ID = "userid";
     public static final String COL_USERNAME = "username";
     public static final String COL_PASSWORD = "password";
-    public static final String FIELD_COMPANYNO = "companyno";
-    public static final String FIELD_NAME = "name";
-    public static final String FIELD_LAST_SYNC = "Last_Sync";
     public static final String[] FIELDS = {
             COL_ID,
             COL_USERNAME,
             COL_PASSWORD,
-            FIELD_COMPANYNO,
-            FIELD_NAME,
-            FIELD_LAST_SYNC,
     };
 
     @Override
@@ -75,9 +69,6 @@ public class UsersTable extends TableHelper {
         user.put(COL_ID, INT(11), PRIMARY_KEY);
         user.put(COL_USERNAME, VARCHAR(20));
         user.put(COL_PASSWORD, VARCHAR(20));
-        user.put(FIELD_COMPANYNO, INT(11));
-        user.put(FIELD_NAME, VARCHAR(60));
-        user.put(FIELD_LAST_SYNC, VARCHAR(25));
         return user.get();
     }
 }
