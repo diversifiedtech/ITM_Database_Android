@@ -49,4 +49,53 @@ public class CreateTable {
         create_string.append(");");
         return create_string.toString();
     }
+    public static class ShortCuts{
+        public static final Where SYNC_NONE = new Where("1", "=", "0");
+        public static final Where SYNC_ALL = new Where("1", "=", "1");
+
+        public static final String CREATE_TABLE = "CREATE TABLE";
+        public static final String PRIMARY_KEY = "PRIMARY KEY";
+        public static final String AUTOINCREMENT = "AUTOINCREMENT";
+        public static final String UNIQUE = "UNIQUE";
+        public static final String INTEGER = "INTEGER";
+        public static final String TEXT = "TEXT";
+        public static final String DATETIME = "DATETIME";
+        public static final String DATE = "DATE";
+        public static final String TIME = "TIME";
+        public static final String BLOB = "BLOB";
+        public static final String BOOLEAN = "BOOLEAN";
+        public static final String REAL = "REAL";
+        public static final String DEFAULT = "DEFAULT";
+        public static final String NOT = "NOT";
+        public static final String NOT_NULL = "NOT NULL";
+        public static final String NULL = "NULL";
+
+        public static String TINYINT(int num) {
+            return "TINYINT(" + num + ")";
+        }
+
+        public static String INT(int num) {
+            return "INT(" + num + ")";
+        }
+
+        public static String VARCHAR(int num) {
+            return "VARCHAR(" + num + ")";
+        }
+
+        public static String DECIMAL(int num, int num2) {
+            return "DECIMAL(" + num + "," + num2 + ")";
+        }
+
+        public static String NCHAR(int num) {
+            return "NCHAR(" + num + ")";
+        }
+
+        public static String CHARACTER(int num) {
+            return "CHARACTER(" + num + ")";
+        }
+
+        public static String DEFAULT(Object o) {
+            return "DEFAULT " + o.toString();
+        }
+    }
 }
