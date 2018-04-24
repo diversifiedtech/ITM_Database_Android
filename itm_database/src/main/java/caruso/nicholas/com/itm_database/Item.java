@@ -39,6 +39,11 @@ public abstract class Item implements Serializable {
         Insert insert = new Insert(table, column, records);
         return db.megaInsert(insert);
     }
+    protected final boolean insertWithId(DatabaseHelper db, String table, String column, ContentValues records) {
+        Insert insert = new Insert(table, column, records);
+        insert.withId();
+        return db.megaInsert(insert);
+    }
 
     protected final boolean update(DatabaseHelper db, String table, String column, ContentValues records, int id) {
         return update(db, table, column, records, id + "");

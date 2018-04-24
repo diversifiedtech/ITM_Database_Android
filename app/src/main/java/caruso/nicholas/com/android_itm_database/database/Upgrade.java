@@ -19,9 +19,9 @@ public class Upgrade extends UpgradeHelper {
 
     @Override
     public void upgrade(DatabaseHelper database) {
-        Log.d("dtc", "upgrade");
+        Log.d("TAG", "upgrade");
         for (TableHelper t : database.all_tables()) {
-            Log.d("dtc", t.table_name());
+            Log.d("TAG", t.table_name());
             DropTable dropTable = new DropTable(t.table_name());
             Database.megaSafeDropTable(dropTable.ImSure().ifExists(), db);
             Database.megaCreateTable(t.CREATE_TABLE(), db);

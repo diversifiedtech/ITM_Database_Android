@@ -29,6 +29,9 @@ public class User extends Item {
         return new UserModal(mContext);
     }
 
+    public User(){
+
+    }
     public User(MegaCursor cursor) {
         super();
         userid = cursor.getIntByField(UsersTable.COL_ID);
@@ -57,7 +60,7 @@ public class User extends Item {
     @Override
     public boolean insert(Context context) {
         DatabaseHelper db = new Database(context);
-        boolean i = insert(db, UsersTable.TABLE_NAME, UsersTable.COL_ID, getRecord());
+        boolean i = insertWithId(db, UsersTable.TABLE_NAME, UsersTable.COL_ID, getRecord());
         db.close();
         return i;
     }
