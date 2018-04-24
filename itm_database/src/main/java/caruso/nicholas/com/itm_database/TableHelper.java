@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-import caruso.nicholas.com.itm_database.QueryBuilder.CreateTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.DropTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.Insert;
 import caruso.nicholas.com.itm_database.QueryBuilder.JoinHelper;
@@ -38,6 +37,13 @@ public abstract class TableHelper implements Serializable {
     public static final String DATETIME = "DATETIME";
     public static final String DATE = "DATE";
     public static final String TIME = "TIME";
+    public static final String BLOB = "BLOB";
+    public static final String BOOLEAN = "BOOLEAN";
+    public static final String REAL = "REAL";
+    public static final String DEFAULT = "DEFAULT";
+    public static final String NOT = "NOT";
+    public static final String NOT_NULL = "NOT NULL";
+    public static final String NULL = "NULL";
 
     public static String TINYINT(int num) {
         return "TINYINT(" + num + ")";
@@ -49,6 +55,22 @@ public abstract class TableHelper implements Serializable {
 
     public static String VARCHAR(int num) {
         return "VARCHAR(" + num + ")";
+    }
+
+    public static String DECIMAL(int num, int num2) {
+        return "DECIMAL(" + num + "," + num2 + ")";
+    }
+
+    public static String NCHAR(int num) {
+        return "NCHAR(" + num + ")";
+    }
+
+    public static String CHARACTER(int num) {
+        return "CHARACTER(" + num + ")";
+    }
+
+    public static String DEFAULT(Object o) {
+        return "DEFAULT " + o.toString();
     }
 
     public abstract boolean sync_up();
