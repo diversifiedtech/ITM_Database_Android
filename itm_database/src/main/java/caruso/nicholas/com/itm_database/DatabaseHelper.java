@@ -4,10 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import caruso.nicholas.com.itm_database.QueryBuilder.CreateTable;
@@ -70,8 +67,6 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
     public static MegaCursor megaSelect(Query query, SQLiteDatabase db) {
         Query.QueryObject obj = query.getQuery();
-        Log.d("TAG", obj.getQuery());
-        Log.d("TAG", Arrays.toString(obj.getWhereArgs()));
 
         if (obj.getWhereArgs() != null) {
             return new MegaCursor(db.rawQuery(obj.getQuery(), obj.getWhereArgs()));

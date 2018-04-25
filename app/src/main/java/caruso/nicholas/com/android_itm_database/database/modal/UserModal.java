@@ -57,7 +57,6 @@ public class UserModal extends ItemModal {
                 user.password = "password";
 
             }
-            Log.d("TAG", "insert");
             user.insert(mContext);
         }
 
