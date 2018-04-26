@@ -17,6 +17,7 @@ import caruso.nicholas.com.itm_database.QueryBuilder.ProjectionList;
 import caruso.nicholas.com.itm_database.QueryBuilder.Query;
 import caruso.nicholas.com.itm_database.QueryBuilder.Truncate;
 import caruso.nicholas.com.itm_database.QueryBuilder.Where;
+import caruso.nicholas.com.itm_database.QueryBuilder.WhereWrapper;
 
 
 /**
@@ -31,7 +32,7 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
 
     public abstract boolean sync_down();
 
-    public abstract Where sync_up_condition();
+    public abstract WhereWrapper sync_up_condition();
 
     public abstract String table_name();
 
@@ -60,7 +61,7 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
     public String getJSONPOST() throws JSONException {
         MegaCursor cursor;
         ProjectionList projectionList = new ProjectionList();
-        Where where;
+        WhereWrapper where;
         OrderList orderList = new OrderList();
         if (sync_up_condition().equals(SYNC_NONE)) {
             return "";
