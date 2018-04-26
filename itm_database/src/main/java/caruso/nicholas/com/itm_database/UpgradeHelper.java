@@ -17,7 +17,7 @@ import caruso.nicholas.com.itm_database.QueryBuilder.Query;
  */
 
 public abstract class UpgradeHelper {
-    int[] versions = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112};
+//    int[] versions = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112};
     protected SQLiteDatabase db;
     protected int oldVersion;
     protected int newVersion;
@@ -30,21 +30,21 @@ public abstract class UpgradeHelper {
 
     public abstract void upgrade(DatabaseHelper database);
 
-    private ArrayList<String> newGeneratedTables = new ArrayList<>();
+    protected ArrayList<String> newGeneratedTables = new ArrayList<>();
 
-    private boolean isNewlyGeneratedTable(String table_name) {
+    protected boolean isNewlyGeneratedTable(String table_name) {
         //if a table is newly generated on this upgrade version then you don't need to run any of the upgrade commands
         //This is because the table will be generated as the current versions table.
         return newGeneratedTables.contains(table_name);
     }
 
-    private void addTable(TableHelper tableHelper) {
+    protected void addTable(TableHelper tableHelper) {
         //Add this newly created table to the array so we can check it later
         newGeneratedTables.add(tableHelper.table_name());
         db.execSQL(tableHelper.CREATE_TABLE());
     }
 
-    private void addColumn(String tableName, String columnName, String datatype, String Default, boolean nullable) {
+    protected void addColumn(String tableName, String columnName, String datatype, String Default, boolean nullable) {
         String alterTable = "ALTER TABLE " + tableName;
         alterTable += " ADD " + columnName + " " + datatype + " ";
         alterTable += nullable ? "NULL" : " NOT NULL";
@@ -54,7 +54,7 @@ public abstract class UpgradeHelper {
         db.execSQL(alterTable);
     }
 
-    private void dropColumn(String table_name, String columnName) {
+    protected void dropColumn(String table_name, String columnName) {
         //Start transaction
         db.beginTransaction();
 
@@ -92,13 +92,13 @@ public abstract class UpgradeHelper {
         db.endTransaction();
     }
 
-    private void toTempTable(String table_name) {
+    protected void toTempTable(String table_name) {
         db.execSQL("DROP TABLE IF EXISTS " + table_name + "_temp");
         db.execSQL("ALTER TABLE " + table_name + " RENAME TO " + table_name + "_temp" + ";");
         Cursor c = db.rawQuery("SELECT * FROM " + table_name + "_temp", null);
     }
 
-    private String createTableWithoutField(Cursor table_info, String table_name, String[] ignore) {
+    protected String createTableWithoutField(Cursor table_info, String table_name, String[] ignore) {
         table_info.moveToFirst();
         StringBuilder create_table = new StringBuilder("CREATE TABLE " + table_name + " (");
         boolean mutli = false;
@@ -142,7 +142,7 @@ public abstract class UpgradeHelper {
 //
 //    }
 
-    private void transferDataFromTemp(String table_name, TableHelper helper) {
+    protected void transferDataFromTemp(String table_name, TableHelper helper) {
         String insertInto = "INSERT INTO " + table_name + "(";
         StringBuilder col = new StringBuilder();
         for (String field : helper.fields()) {

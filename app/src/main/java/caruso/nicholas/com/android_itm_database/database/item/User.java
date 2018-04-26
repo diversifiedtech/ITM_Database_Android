@@ -23,20 +23,26 @@ public class User extends Item {
     public Integer userid;
     public String username;
     public String password;
-
+    public Object blob;
+    public Double dub;
+    public Date date;
 
     public static UserModal getModal(Context mContext) {
         return new UserModal(mContext);
     }
 
-    public User(){
+    public User() {
 
     }
+
     public User(MegaCursor cursor) {
         super();
         userid = cursor.getIntByField(UsersTable.COL_ID);
         username = cursor.getStringByField(UsersTable.COL_USERNAME);
         password = cursor.getStringByField(UsersTable.COL_PASSWORD);
+        blob = cursor.getStringByField(UsersTable.FIELD_BLOB);
+        dub = cursor.getDoubleByField(UsersTable.FIELD_DOUBLE);
+        date = DateTimeConversion.StringToDate(cursor.getStringByField(UsersTable.FIELD_DATETIME));
     }
 
     @Override
@@ -54,6 +60,10 @@ public class User extends Item {
         cv.put(UsersTable.COL_ID, userid);
         cv.put(UsersTable.COL_USERNAME, username);
         cv.put(UsersTable.COL_PASSWORD, password);
+        cv.put(UsersTable.FIELD_BLOB, blob.toString());
+        cv.put(UsersTable.FIELD_DOUBLE, dub);
+        cv.put(UsersTable.FIELD_DATETIME, DateTimeConversion.DatabaseDateTime(date));
+
         return cv;
     }
 

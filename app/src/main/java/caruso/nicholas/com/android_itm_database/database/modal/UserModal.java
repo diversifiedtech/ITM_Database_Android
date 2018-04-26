@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import caruso.nicholas.com.android_itm_database.database.Database;
@@ -16,7 +17,6 @@ import caruso.nicholas.com.itm_database.QueryBuilder.JoinHelper;
 import caruso.nicholas.com.itm_database.QueryBuilder.Query;
 import caruso.nicholas.com.itm_database.QueryBuilder.Truncate;
 import caruso.nicholas.com.itm_database.QueryBuilder.Where;
-import caruso.nicholas.com.itm_database.QueryBuilder.WhereClump;
 
 /**
  * Nick:1/4/2018
@@ -57,9 +57,26 @@ public class UserModal extends ItemModal {
                 user.password = "password";
 
             }
+            if (i % 2 == 0) {
+                user.blob = "Object String";
+            } else {
+                user.blob = new Simple(2, "Simple");
+            }
+            user.dub = 1.57;
+            user.date = Calendar.getInstance().getTime();
             user.insert(mContext);
         }
 
+    }
+
+    public static class Simple {
+        int x;
+        String y;
+
+        Simple(int x, String y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     public void test() {

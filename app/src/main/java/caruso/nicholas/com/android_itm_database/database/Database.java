@@ -18,7 +18,7 @@ public final class Database extends DatabaseHelper {
     public static final String REMOTE_DATABASE_LINK = "www.com";
     public static final String AuthTable = UsersTable.TABLE_NAME;
     public static final String DATABASE_NAME = "local_database";
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
     public Database(Context context) {
         super(context, REMOTE_DATABASE_LINK, DATABASE_NAME, null, VERSION);
