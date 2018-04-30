@@ -6,11 +6,22 @@ A series of classes that make it easier to create Querys and objects based on da
 minSdkVersion 19
 
 ## Getting Started
+Add the JitPack maven repository to the list of repositories:
+```
+    allprojects {
+        repositories {
+            maven { url "https://jitpack.io" }
+        }
+   }
+```
+
 Add dependencies
 
 ```
 implementation 'com.github.nmc9:ITM_Database_Android:v1.3.2-beta'
 ```
+
+
 Note*: This code can be seen in the exmaple app that comes along
 
 It's recommended to create a database folder in your project and inside that folder add three more
