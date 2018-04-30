@@ -20,7 +20,7 @@ It's recommended to create a database folder in your project and inside that fol
 These will hold all your ITM classes.
 
 Next create a subclass of DatabaseHelper and UpgradeHelper
-Database
+### Database
 ```
 public final class Database extends DatabaseHelper {
     public static final String REMOTE_DATABASE_LINK = "{yourserver.com}";
@@ -56,7 +56,7 @@ public final class Database extends DatabaseHelper {
 }
 ```
 
-Upgrade 
+### Upgrade 
 
 ```
 public class Upgrade extends UpgradeHelper {
@@ -80,9 +80,12 @@ public class Upgrade extends UpgradeHelper {
     }
 }
 ```
-
 Now you can create ITM classes
-Example Table Class
+ 
+### Example Table Class
+The table class should contain a list of all the columns of the table.
+It should also extend the TableHelper class. This class has the following methods and uses them to determine what columns and records that should sync when syncing occurs.
+The CreateTable method below will be described in more detail in the QueryBuilder section
 
 ```public class UsersTable extends TableHelper {
 
@@ -172,22 +175,122 @@ Example Table Class
 }
 ```
 
+### Example Item Class
+The item class should look like the table class. It should have all the varaibles you want to use in your activities.
+It's usefull to add a static ```getModal(Context context)``` method so you can access the related modal from Item classes.
+There are two constructors. One that builds a blank Item and one that builds an Item from a MegaCursor (More info in queryBuilder). In this constructor set the Item class varaibles with this cursor using the stings from your Table class.
+It should look something like this ``` varaible = cursor.getIntByField(ClassTable.FIELD_NAME); ```
+
+The getRecord method is used for making Insert/Update Operations. This should do the reverse of the constructor. Create a ContentValue object and fill it with the variables of this class. It should look something like this 
+```contentvalue.put(ClassTable.COLUMN_NAME, variable); ```
+The dump method is mainly used for testing. Plug values in to return a String to Log data
+
+There are three other methods Insert,Update,Delete. They do what the name implies.
+Use these methods to call helper methods that will do the work of these methods for you.
+Follow the example for an idea but each of these methods should have the same flow.
+1. Create DatabaseHelper Object
+2. Pass data to helper function
+3. close DatabaseHelper object;
+4. return result.
+
+There are 4 helper functions insert,update,delete,insertWithId
+#### insert() parameters
+1. DatabaseHelper object
+2. The name of the table being inserted
+3. The name of the id column
+4. Content Values retrieved by getRecord();
+
+#### update() parameters
+1. DatabaseHelper object
+2. The name of the table being inserted
+3. The name of the id column
+4. Content Values retrieved by getRecord();
+5. the id column value of this record
+
+#### delete() parameters
+1. DatabaseHelper object
+2. The name of the table being inserted
+3. The name of the id column
+5. the id column value of this record
+
+#### insertWithId() parameters
+Use insert if table has AUTO_INCREMENT id insertWithId if not
+1. DatabaseHelper object
+2. The name of the table being inserted
+3. The name of the id column
+4. Content Values retrieved by getRecord();
+```
+public class User extends Item {
+
+    public Integer userid;
+    public String username;
+    public String password;
+
+    public static UserModal getModal(Context mContext) {
+        return new UserModal(mContext);
+    }
+
+    public User() {
+
+    }
+     
+    public User(MegaCursor cursor) {
+        super();
+        userid = cursor.getIntByField(UsersTable.COL_ID);
+        username = cursor.getStringByField(UsersTable.COL_USERNAME);
+        password = cursor.getStringByField(UsersTable.COL_PASSWORD);
+        blob = cursor.getStringByField(UsersTable.FIELD_BLOB);
+        dub = cursor.getDoubleByField(UsersTable.FIELD_DOUBLE);
+        date = DateTimeConversion.StringToDate(cursor.getStringByField(UsersTable.FIELD_DATETIME));
+    }
+
+    @Override
+    public String dump() {
+        String dump = "User dump:\n";
+        dump += "userid" + userid + "\n";
+        dump += "username" + username + "\n";
+        dump += "password" + password + "\n";
+        return dump;
+    }
+
+    @Override
+    public ContentValues getRecord() {
+        ContentValues cv = new ContentValues();
+        cv.put(UsersTable.COL_ID, userid);
+        cv.put(UsersTable.COL_USERNAME, username);
+        cv.put(UsersTable.COL_PASSWORD, password);
+        return cv;
+    }
+
+    @Override
+    public boolean insert(Context context) {
+        DatabaseHelper db = new Database(context);
+        boolean i = insertWithId(db, UsersTable.TABLE_NAME, UsersTable.COL_ID, getRecord());
+        db.close();
+        return i;
+    }
+
+    @Override
+    public boolean update(Context context) {
+        DatabaseHelper db = new Database(context);
+        boolean i = update(db, UsersTable.TABLE_NAME, UsersTable.COL_ID, getRecord(), userid);
+        db.close();
+        return i;
+    }
+
+    @Override
+    public boolean delete(Context context, int mode) {
+        DatabaseHelper db = new Database(context);
+        boolean i = delete(db, UsersTable.TABLE_NAME, UsersTable.COL_ID, userid);
+        db.close();
+        return i;
+    }
+}
+```
+### Example Alternative Item class
+Not Every item class needs to be an exact clone of a database table
 
 
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
