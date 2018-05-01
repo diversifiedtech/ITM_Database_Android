@@ -102,7 +102,6 @@ public class Union {
 //            for (Query query : queryList) {
 //                ProjectionList pl = query.getProjection();
 //                storedProjectionList.add(pl);
-//                Log.d("TAG", "This happened " + i + " times");
 //                pl.add("\"" + query.getTables().getTable() + "\"" + " AS " + "TABLE_NAME");
 //                pl.add(i + " AS " + "QUERY_NUMBER");
 //                query.replaceProjection(pl);

@@ -1,6 +1,5 @@
 package caruso.nicholas.com.android_itm_database.database.table;
 
-import caruso.nicholas.com.itm_database.DatabaseHelper;
 import caruso.nicholas.com.itm_database.QueryBuilder.CreateTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.Where;
 import caruso.nicholas.com.itm_database.TableHelper;
@@ -30,8 +29,8 @@ public class UsersTable extends TableHelper {
         return new String[]{COL_ID};
     }
 
-    public UsersTable(DatabaseHelper databaseHelper) {
-        super(databaseHelper);
+    public UsersTable() {
+
     }
 
     @Override

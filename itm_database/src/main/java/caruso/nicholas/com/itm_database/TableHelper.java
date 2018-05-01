@@ -1,6 +1,7 @@
 package caruso.nicholas.com.itm_database;
 
 import android.content.ContentValues;
+import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +27,7 @@ import caruso.nicholas.com.itm_database.QueryBuilder.WhereWrapper;
  */
 
 public abstract class TableHelper extends CreateTable.ShortCuts implements Serializable {
-    private DatabaseHelper dbHelper;
+//    private DatabaseHelper dbHelper;
 
     public abstract boolean sync_up();
 
@@ -44,21 +45,21 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
 
     public abstract String CREATE_TABLE();
 
-    public TableHelper(DatabaseHelper databaseHelper) {
-        dbHelper = databaseHelper;
+    public TableHelper() {
+
     }
 
-    public void truncate() {
+    public void truncate(DatabaseHelper databaseHelper) {
         Truncate truncate = new Truncate(table_name());
-        dbHelper.megaSafeTruncate(truncate.ImSure());
+        databaseHelper.megaSafeTruncate(truncate.ImSure());
     }
 
-    public void drop() {
+    public void drop(DatabaseHelper databaseHelper) {
         DropTable dropTable = new DropTable(table_name());
-        dbHelper.megaSafeDropTable(dropTable.ImSure());
+        databaseHelper.megaSafeDropTable(dropTable.ImSure());
     }
 
-    public String getJSONPOST() throws JSONException {
+    public String getJSONPOST(DatabaseHelper databaseHelper) throws JSONException {
         MegaCursor cursor;
         ProjectionList projectionList = new ProjectionList();
         WhereWrapper where;
@@ -73,7 +74,7 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
         projectionList.addAll(sync_up_filter_fields());
         orderList.add(id_column());
         Query query = new Query(projectionList, JoinHelper.initJoin(table_name()), where, null);
-        cursor = dbHelper.megaSelect(query);
+        cursor = databaseHelper.megaSelect(query);
 
         JSONArray jsonTable = new JSONArray();
         cursor.moveToFirst();
@@ -90,7 +91,7 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
         return jsonTable.toString();
     }
 
-    public void insertFromJSON(JSONArray jsonTable) throws JSONException {
+    public void insertFromJSON(JSONArray jsonTable, DatabaseHelper databaseHelper) throws JSONException {
         ContentValues row = new ContentValues();
         for (int i = 0; i < jsonTable.length(); i++) {
             JSONObject jsonRecord = jsonTable.getJSONObject(i);
@@ -103,7 +104,7 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
                 }
             }
             Insert insert = new Insert(table_name(), id_column(), row).withId();
-            dbHelper.megaInsert(insert);
+            databaseHelper.megaInsert(insert);
         }
     }
 

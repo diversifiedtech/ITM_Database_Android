@@ -79,7 +79,7 @@ public class UserModal extends ItemModal {
         }
     }
 
-    public void test() {
+    public List<User> test() {
         DatabaseHelper db = new Database(mContext);
         Query query = new Query(null, new JoinHelper(table), null, null);
         MegaCursor cursor = db.megaSelect(query);
@@ -95,7 +95,7 @@ public class UserModal extends ItemModal {
             Log.d("TAG", user.dump());
         }
         Log.d("TAG", cursor.getCount() + "count ");
-
+        return users;
     }
 
     public void testBetween() {

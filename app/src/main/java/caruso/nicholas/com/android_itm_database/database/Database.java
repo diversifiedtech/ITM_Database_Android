@@ -27,7 +27,7 @@ public final class Database extends DatabaseHelper {
     @Override
     public ArrayList<TableHelper> all_tables() {
         ArrayList<TableHelper> TABLES = new ArrayList<>();
-        TABLES.add(new UsersTable(this));
+        TABLES.add(new UsersTable());
         return TABLES;
     }
 

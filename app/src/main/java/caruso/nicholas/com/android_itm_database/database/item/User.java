@@ -3,6 +3,8 @@ package caruso.nicholas.com.android_itm_database.database.item;
 import android.content.ContentValues;
 import android.content.Context;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 import caruso.nicholas.com.android_itm_database.database.Database;
@@ -27,16 +29,11 @@ public class User extends Item {
     public Double dub;
     public Date date;
 
-    public static UserModal getModal(Context mContext) {
-        return new UserModal(mContext);
-    }
-
     public User() {
 
     }
 
     public User(MegaCursor cursor) {
-        super();
         userid = cursor.getIntByField(UsersTable.COL_ID);
         username = cursor.getStringByField(UsersTable.COL_USERNAME);
         password = cursor.getStringByField(UsersTable.COL_PASSWORD);
@@ -44,6 +41,24 @@ public class User extends Item {
         dub = cursor.getDoubleByField(UsersTable.FIELD_DOUBLE);
         date = DateTimeConversion.StringToDate(cursor.getStringByField(UsersTable.FIELD_DATETIME));
     }
+
+    public User(JSONObject jsonObject) {
+        this(JSONToCursor(jsonObject));
+    }
+
+    public static UserModal getModal(Context mContext) {
+        return new UserModal(mContext);
+    }
+
+//    public User(MegaCursor cursor) {
+//        super();
+//        userid = cursor.getIntByField(UsersTable.COL_ID);
+//        username = cursor.getStringByField(UsersTable.COL_USERNAME);
+//        password = cursor.getStringByField(UsersTable.COL_PASSWORD);
+//        blob = cursor.getStringByField(UsersTable.FIELD_BLOB);
+//        dub = cursor.getDoubleByField(UsersTable.FIELD_DOUBLE);
+//        date = DateTimeConversion.StringToDate(cursor.getStringByField(UsersTable.FIELD_DATETIME));
+//    }
 
     @Override
     public String dump() {

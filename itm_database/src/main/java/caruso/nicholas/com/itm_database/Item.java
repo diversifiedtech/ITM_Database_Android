@@ -2,8 +2,14 @@ package caruso.nicholas.com.itm_database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.MatrixCursor;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import caruso.nicholas.com.itm_database.QueryBuilder.Delete;
 import caruso.nicholas.com.itm_database.QueryBuilder.Insert;
@@ -21,13 +27,43 @@ public abstract class Item implements Serializable {
     public static final int DELETE_MODE_NOCASCADE = 0x1;
     public static final int DELETE_MODE_DEFAULT = 0;
 
-
-    public Item() {
-    }
-
     public abstract String dump();
 
     public abstract ContentValues getRecord();
+
+    public JSONObject getJSON(TableHelper tableHelper) {
+        String[] fields = tableHelper.sync_up_filter_fields();
+        JSONObject jsonObject = new JSONObject();
+        ContentValues record = getRecord();
+        for (String field : fields) {
+            String rec = record.getAsString(field);
+            try {
+                jsonObject.put(field, rec != null ? rec : JSONObject.NULL);
+            } catch (JSONException ignore) {
+            }
+        }
+        return jsonObject;
+    }
+
+
+    protected static MegaCursor JSONToCursor(JSONObject jsonObject) {
+        Iterator names = jsonObject.keys();
+        ArrayList<String> matrix = new ArrayList<>();
+        while (names.hasNext()) {
+            matrix.add((String) names.next());
+        }
+        MatrixCursor cursor = new MatrixCursor(matrix.toArray(new String[matrix.size()]));
+        MatrixCursor.RowBuilder s = cursor.newRow();
+        for (String m : matrix) {
+            try {
+                s.add(m, jsonObject.get(m));
+            } catch (JSONException ignore) {
+                s.add(m, JSONObject.NULL);
+            }
+        }
+        cursor.moveToFirst();
+        return new MegaCursor(cursor);
+    }
 
     public abstract boolean insert(Context context);
 
@@ -35,21 +71,26 @@ public abstract class Item implements Serializable {
 
     public abstract boolean delete(Context context, int mode);
 
-    protected final boolean insert(DatabaseHelper db, String table, String column, ContentValues records) {
+    protected final boolean insert(DatabaseHelper db, String table, String
+            column, ContentValues records) {
         Insert insert = new Insert(table, column, records);
         return db.megaInsert(insert);
     }
-    protected final boolean insertWithId(DatabaseHelper db, String table, String column, ContentValues records) {
+
+    protected final boolean insertWithId(DatabaseHelper db, String table, String
+            column, ContentValues records) {
         Insert insert = new Insert(table, column, records);
         insert.withId();
         return db.megaInsert(insert);
     }
 
-    protected final boolean update(DatabaseHelper db, String table, String column, ContentValues records, int id) {
+    protected final boolean update(DatabaseHelper db, String table, String
+            column, ContentValues records, int id) {
         return update(db, table, column, records, id + "");
     }
 
-    protected final boolean update(DatabaseHelper db, String table, String column, ContentValues records, String id) {
+    protected final boolean update(DatabaseHelper db, String table, String
+            column, ContentValues records, String id) {
         Where where = new Where(column, "=", id);
         Update update = new Update(table, records, where);
         return db.megaUpdate(update);
