@@ -58,8 +58,10 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
         DropTable dropTable = new DropTable(table_name());
         databaseHelper.megaSafeDropTable(dropTable.ImSure());
     }
-
-    public String getJSONPOST(DatabaseHelper databaseHelper) throws JSONException {
+    public String getJSONPOSTString(DatabaseHelper databaseHelper) throws JSONException {
+     return getJSONPOST(databaseHelper).toString();   
+    }
+    public JSONArray getJSONPOST(DatabaseHelper databaseHelper) throws JSONException {
         MegaCursor cursor;
         ProjectionList projectionList = new ProjectionList();
         WhereWrapper where;
@@ -88,7 +90,7 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
             cursor.moveToNext();
         }
         cursor.close();
-        return jsonTable.toString();
+        return jsonTable;
     }
 
     public void insertFromJSON(JSONArray jsonTable, DatabaseHelper databaseHelper) throws JSONException {
