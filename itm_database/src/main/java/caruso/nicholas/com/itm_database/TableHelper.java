@@ -58,16 +58,18 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
         DropTable dropTable = new DropTable(table_name());
         databaseHelper.megaSafeDropTable(dropTable.ImSure());
     }
+    
     public String getJSONPOSTString(DatabaseHelper databaseHelper) throws JSONException {
      return getJSONPOST(databaseHelper).toString();   
     }
+    
     public JSONArray getJSONPOST(DatabaseHelper databaseHelper) throws JSONException {
         MegaCursor cursor;
         ProjectionList projectionList = new ProjectionList();
         WhereWrapper where;
         OrderList orderList = new OrderList();
         if (sync_up_condition().equals(SYNC_NONE)) {
-            return "";
+            return new JSONArray();
         } else if (sync_up_condition().equals(SYNC_ALL)) {
             where = null;
         } else {
