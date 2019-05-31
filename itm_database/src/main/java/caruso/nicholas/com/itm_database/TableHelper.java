@@ -98,9 +98,9 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
     }
 
     public void insertFromJSON(JSONArray jsonTable, DatabaseHelper databaseHelper) throws JSONException {
-        ContentValues row = new ContentValues();
         List<Insert> insertList = new ArrayList<>();
         for (int i = 0; i < jsonTable.length(); i++) {
+            ContentValues row = new ContentValues();
             JSONObject jsonRecord = jsonTable.getJSONObject(i);
             for (String field : fields()) {
                 String rec = jsonRecord.getString(field);
