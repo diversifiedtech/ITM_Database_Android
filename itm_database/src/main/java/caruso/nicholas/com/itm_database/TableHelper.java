@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import caruso.nicholas.com.itm_database.QueryBuilder.CreateTable;
 import caruso.nicholas.com.itm_database.QueryBuilder.DropTable;
@@ -97,6 +99,7 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
 
     public void insertFromJSON(JSONArray jsonTable, DatabaseHelper databaseHelper) throws JSONException {
         ContentValues row = new ContentValues();
+        List<Insert> insertList = new ArrayList<>();
         for (int i = 0; i < jsonTable.length(); i++) {
             JSONObject jsonRecord = jsonTable.getJSONObject(i);
             for (String field : fields()) {
@@ -108,8 +111,9 @@ public abstract class TableHelper extends CreateTable.ShortCuts implements Seria
                 }
             }
             Insert insert = new Insert(table_name(), id_column(), row).withId();
-            databaseHelper.megaInsert(insert);
+            insertList.add(insert);
         }
+        databaseHelper.megaInsert(insertList);
     }
 
 }
